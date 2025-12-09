@@ -1,0 +1,63 @@
+name: CI/CD Quality Checks
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    name: Build & Test (PHP ${{ matrix.php-versions }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: ['8.3']
+
+    steps:
+    # 1. Descargar el código
+    - uses: actions/checkout@v4
+
+    # 2. Configurar PHP en el entorno de GitHub
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extensions: mbstring, intl, xml, ctype, iconv
+        coverage: none # Desactivamos coverage para más velocidad
+
+    # 3. Validar estructura de composer.json
+    - name: Validate composer.json
+      run: composer validate --strict
+
+    # 4. Cachear dependencias para que sea más rápido en futuras ejecuciones
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v3
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+
+    # 5. Instalar dependencias
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
+
+    # 6. Ejecutar Análisis Estático (PHPStan)
+    # Como tienes phpstan.neon en tu árbol, asumimos que usas PHPStan
+    - name: Run Static Analysis (PHPStan)
+      run: vendor/bin/phpstan analyse --no-progress
+
+    # 7. Ejecutar Estándares de Código (ECS)
+    # Como tienes ecs.php en tu árbol, ejecutamos EasyCodingStandard
+    - name: Check Coding Standards (ECS)
+      run: vendor/bin/ecs check src tests --no-progress-bar
+
+    # 8. Ejecutar Tests Unitarios (PHPUnit)
+    - name: Run Test Suite
+      run: vendor/bin/phpunit
