@@ -11,9 +11,9 @@ use GildedRose\Item\Domain\Repository\ItemRepositoryInterface;
 
 class InMemoryItemRepository implements ItemRepositoryInterface
 {
-    /** * Simulamos la base de datos con un array asociativo 
+    /** * Simulamos la base de datos con un array asociativo
      * donde la clave es el nombre del item.
-     * @var array<string, Item> 
+     * @var array<string, Item>
      */
     private array $items = [];
 
@@ -34,7 +34,7 @@ class InMemoryItemRepository implements ItemRepositoryInterface
      */
     public function getByName(string $name): DomainItem
     {
-        if (!isset($this->items[$name])) {
+        if (! isset($this->items[$name])) {
             throw ItemNotFoundException::withName($name);
         }
 
@@ -50,7 +50,7 @@ class InMemoryItemRepository implements ItemRepositoryInterface
         // DESHIDRATACIÓN: Extraemos el objeto legacy para guardarlo en el array.
         // Asegúrate de tener el método publico getLegacyItem() en tu DomainItem.
         $legacyItem = $item->getLegacyItem();
-        
+
         $this->items[$legacyItem->name] = $legacyItem;
     }
 

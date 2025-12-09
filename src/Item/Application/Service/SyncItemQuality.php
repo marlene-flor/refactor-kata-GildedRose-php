@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace GildedRose\Item\Application\Service;
 
 use GildedRose\Item;
-use GildedRose\ItemFactory;
 use GildedRose\Item\Domain\Entity\DomainItem;
+use GildedRose\ItemFactory;
 
 /**
  * Este servicio orquesta la actualización de un solo Item.
  */
 
- class SyncItemQuality
+class SyncItemQuality
 {
     public function sync(Item $item): void
     {
@@ -23,6 +23,5 @@ use GildedRose\Item\Domain\Entity\DomainItem;
         $updater = ItemFactory::getUpdater($domainItem->name());
 
         $updater->update($domainItem);
-        
     }
 }

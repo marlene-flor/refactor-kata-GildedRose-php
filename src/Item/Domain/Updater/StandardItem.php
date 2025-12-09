@@ -9,17 +9,17 @@ namespace GildedRose\Item\Domain\Updater;
  * Después de la fecha de venta, disminuye el doble.
  */
 
- use GildedRose\Item\Domain\Entity\DomainItem;
+use GildedRose\Item\Domain\Entity\DomainItem;
 
- class StandardItem implements ItemUpdater
- {
-     public function update(DomainItem $item): void
-     {
-         $item->decreaseSellIn();
-         $item->decreaseQuality();
- 
-         if ($item->sellIn() < 0) {
-             $item->decreaseQuality();
-         }
-     }
- }
+class StandardItem implements ItemUpdater
+{
+    public function update(DomainItem $item): void
+    {
+        $item->decreaseSellIn();
+        $item->decreaseQuality();
+
+        if ($item->sellIn() < 0) {
+            $item->decreaseQuality();
+        }
+    }
+}

@@ -12,14 +12,15 @@ class CreateItemCommandHandler
 {
     public function __construct(
         private ItemRepositoryInterface $repository
-    ) {}
+    ) {
+    }
 
     public function __invoke(CreateItemCommand $command): void
     {
         $item = DomainItem::create(
             $command->name,
             $command->sellIn,
-            Quality::create($command->quality) 
+            Quality::create($command->quality)
         );
 
         $this->repository->create($item);

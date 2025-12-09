@@ -11,7 +11,8 @@ class DomainItem
 {
     public function __construct(
         private Item $item
-    ) {}
+    ) {
+    }
 
     public static function create(string $name, int $sellIn, Quality $quality): self
     {

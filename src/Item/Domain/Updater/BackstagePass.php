@@ -13,23 +13,23 @@ namespace GildedRose\Item\Domain\Updater;
 
 use GildedRose\Item\Domain\Entity\DomainItem;
 
- class BackstagePass implements ItemUpdater
- {
-     public function update(DomainItem $item): void
-     {
-         $item->decreaseSellIn();
-         $item->increaseQuality();
- 
-         if ($item->sellIn() < 10) {
-             $item->increaseQuality();
-         }
- 
-         if ($item->sellIn() < 5) {
-             $item->increaseQuality();
-         }
- 
-         if ($item->sellIn() < 0) {
-             $item->dropQualityToZero();
-         }
-     }
- }
+class BackstagePass implements ItemUpdater
+{
+    public function update(DomainItem $item): void
+    {
+        $item->decreaseSellIn();
+        $item->increaseQuality();
+
+        if ($item->sellIn() < 10) {
+            $item->increaseQuality();
+        }
+
+        if ($item->sellIn() < 5) {
+            $item->increaseQuality();
+        }
+
+        if ($item->sellIn() < 0) {
+            $item->dropQualityToZero();
+        }
+    }
+}

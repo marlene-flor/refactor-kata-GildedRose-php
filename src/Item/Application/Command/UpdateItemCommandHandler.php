@@ -11,7 +11,8 @@ class UpdateItemCommandHandler
 {
     public function __construct(
         private ItemRepositoryInterface $repository
-    ) {}
+    ) {
+    }
 
     public function __invoke(UpdateItemCommand $command): void
     {
